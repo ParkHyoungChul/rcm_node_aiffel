@@ -26,7 +26,7 @@ streamlit run show_st.py
 
   > 바로 Streamlit으로 실행하면 에러가 생겼을 때 디버깅이 번거로울 수 있으므로, 먼저 이 코드로 확인하세요.
 
-* `autoint_mlp_train.ipynb` ** AutoInt_MLP 모델을 학습시키고 가중치를 저장하는 코드**입니다.
+* `autoint_mlp_train.ipynb` **AutoInt_MLP 모델을 학습시키고 가중치를 저장하는 코드**입니다.
 
   > 이미 학습된 가중치 파일도 함께 전달드렸지만, 새 모델을 만들고 아키텍쳐를 바꾸며 학습할때는 해당 코드를 참고하시기 바랍니다.
   > !주의! : 이 학습파일에서 모델 아키텍쳐를 변경했다면 `autointmlp.py`이 파일에서도 같은 형태로 변경을 해주셔야합니다
