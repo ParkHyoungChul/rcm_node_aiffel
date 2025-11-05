@@ -1,6 +1,3 @@
-
-<img width="387" height="202" alt="image" src="https://github.com/user-attachments/assets/bd9b1d89-2258-4d19-849d-9e7f7830abf9" />
-
 ## 가상환경 설정
 
 * 새로운 가상환경을 생성한 뒤, 아래 버전으로 진행해 주세요.
