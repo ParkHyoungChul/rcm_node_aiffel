@@ -201,14 +201,24 @@ class AutoIntMLPModel(Model):
     
 def predict_model(model, pred_df):
     batch_size = 2048
-    top=10
-    user_pred_info = []
+    top = 10
+    results = [] # 결과를 담을 단일 리스트
+    
     total_rows = len(pred_df)
     for i in range(0, total_rows, batch_size):
-        features = pred_df.iloc[i:i + batch_size, :].values
+        # 1. 모델 피처 개수가 14개라면 정교하게 슬라이싱 (label 컬럼 제외 등)
+        # 만약 pred_df에 피처만 있다면 [i:i + batch_size, :] 가 맞습니다.
+        features = pred_df.iloc[i:i + batch_size, :].values 
+        
         y_pred = model.predict(features, verbose=False)
+        
         for feature, p in zip(features, y_pred):
-            u_i = feature[:2]
-            user_pred_info.append((int(u_i[1]), float(p)))
+            # feature[0]은 user_id, feature[1]은 movie_id라고 가정
+            i_id = int(feature[1])
+            score = float(p.item() if hasattr(p, 'item') else p[0])
+            
+            # (아이템ID, 점수) 튜플을 리스트에 추가
+            results.append((i_id, score))
     
-    return sorted(user_pred_info, key=lambda s : s[1], reverse=True)[:top]
+    # 2. 모든 영화에 대한 예측 점수 중 상위 top개를 점수(s[1]) 기준으로 정렬
+    return sorted(results, key=lambda s: s[1], reverse=True)[:top]
