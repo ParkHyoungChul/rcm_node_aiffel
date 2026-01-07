@@ -1,48 +1,84 @@
-## 가상환경 설정
+# 🚀 AutoInt 추천 시스템 프로젝트 (AutoInt Recommendation System)
 
-* 새로운 가상환경을 생성한 뒤, 아래 버전으로 진행해 주세요.
-  (권장: `Python 3.11`)
+이 프로젝트는 **AutoInt** 및 **AutoInt_MLP** 모델을 사용하여 영화/콘텐츠 추천 시스템을 구현하고, 학습된 모델을 **Streamlit** 대시보드를 통해 시각화하는 프로젝트입니다.
+
+---
+
+## 🛠 1. 가상환경 설정 (Environment Setup)
+
+권장 환경인 **Python 3.11** 사용을 권장하며(제가 3.11로했습니다 ㅎ), 아래 단계에 따라 가상환경을 구축해 주세요.
 
 ```bash
+# 1. 가상환경 생성 (이름: ds6_rcmm)
+conda create -n ds6_rcmm python=3.11 -y
+
+# 2. 가상환경 활성화
+conda activate ds6_rcmm
+
+# 필수 패키지 설치
 pip install -r requirements.txt
+
 ```
 
-## 실행 방법
+---
 
-* 프로젝트 폴더 안에서 다음 명령어로 실행해 주세요.
+## 💻 2. 실행 방법 (Usage)
 
-  * `show_st.py`: Lecture 모델(AutoInt) 스트림릿 실행 코드
-  * `show_st_plus.py`: Project 모델(AutoInt_MLP) 스트림릿 실행 코드
+프로젝트 폴더 내에서 아래 명령어를 입력하면 웹 인터페이스(Streamlit)를 통해 추천 시스템을 확인할 수 있습니다.
+
+* **`show_st.py`**: Lecture 모델 (**AutoInt**) 스트림릿 실행 코드
+* **`show_st_plus.py`**: Project 모델 (**AutoInt_MLP**) 스트림릿 실행 코드
 
 ```bash
+# 기본 AutoInt 모델 실행
 streamlit run show_st.py
+
+# 성능 개선된 AutoInt_MLP 모델 실행
+streamlit run show_st_plus.py
+
 ```
 
-## 노트북 코드 설명
+---
 
-순서
+## 📑 3. 노트북 코드 안내 (Notebooks)
 
-* `data_EDA.ipynb` 데이터를 다운로드받고 EDA를 해보는 코드입니다
+학습 및 데이터 처리는 아래 순서대로 구성되어 있습니다.
 
-* `data_prepro.ipynb` 데이터를 전처리하는 코드입니다 (이미 전처리된 데이터를 전달드리긴했습니다)
+| 순서 | 파일명 | 설명 |
+| --- | --- | --- |
+| 1 | `data_EDA.ipynb` | 데이터를 로드하고 기초적인 탐색적 데이터 분석(EDA) 수행 |
+| 2 | `data_prepro.ipynb` | 학습용 데이터 전처리 (기본 전처리 데이터는 이미 제공됨) |
+| 3 | `autoint_train.ipynb` | **AutoInt** 모델 학습 및 가중치 저장 |
+| 4 | `autoint_mlp_train.ipynb` | **AutoInt_MLP** 모델 학습 및 가중치 저장 |
+| 5 | `model_load_test.ipynb` | **모델 로드 및 정상 작동 여부 디버깅 코드** |
 
-* `autoint_train.ipynb` Autoint 모델을 훈련시키고 모델 가중치를 저장하는 코드입니다 (이미 가중치가 들어있긴합니다)
+> **⚠️ 중요**: Streamlit 실행 중 에러가 발생하면 디버깅이 어려울 수 있습니다. 모델 수정 후에는 `model_load_test.ipynb`에서 가중치가 올바르게 로드되는지 먼저 확인해 보세요.
 
-* `autoint_mlp_train.ipynb` Autoint+ 모델을 훈련시키고 모델 가중치를 저장하는 코드입니다 (이미 가중치가 들어있긴합니다)
+---
 
-* `model_load_test.ipynb` **모델이 정상적으로 로드되는지 확인**하는 코드입니다.
+## ⚠️ 4. 주의사항 및 참고
 
-  > 바로 Streamlit으로 실행하면 에러가 생겼을 때 디버깅이 번거로울 수 있으므로 그때 확인을 위해 만들어본 코드입니다
+### 1️⃣ 모델 구조 일치
 
-  > 이미 학습된 가중치 파일도 함께 전달드렸지만, 새 모델을 만들고 아키텍쳐를 바꾸며 학습할때는 해당 코드를 참고하시기 바랍니다.
-  > !주의! : 이 학습파일에서 모델 아키텍쳐를 변경했다면 `autointmlp.py`이 파일에서도 같은 형태로 변경을 해주셔야합니다
+학습 파일(`autoint_mlp_train.ipynb`)에서 모델의 아키텍처(Layer 수, Embedding 차원 등)를 변경했다면, 반드시 **`autointmlp.py` 파일 내의 모델 정의도 동일하게 수정**해야 가중치 로드가 가능합니다.
 
-## 추가로 진행해야 할 작업
+### 2️⃣ TensorFlow 버전 및 가중치 파일
 
-* 모델의 **성능 향상을 위한 다양한 시도**를 자유롭게 해보세요!
+* 사용 환경에 따라 가중치 저장 방식이 다를 수 있습니다. 현재 코드는 가중치 파일 뒤에 `.weights` 확장자가 붙는 형식을 지원하도록 설정되어 있습니다.
 
-## 주의사항 및 참고
+### 3️⃣ 데이터 타입 설정 (`dtype`)
 
-* **TensorFlow 버전에 따라** 가중치 파일의 확장자가 다를 수 있습니다. (제공되는 코드는 .weights 가 하나씩 더 붙어있습니다)참고해주세요
-* 코드 내 `dtype.longlong` 부분은 `int64` 또는 `int32`로 변경되어야 할 수 있습니다. 참고해주세요
-* 다양한 오류가 발생하지만 참고 해주세요. 😄
+* 코드 내에서 `dtype.longlong` 부분은 라이브러리 버전에 따라 에러가 발생할 수 있습니다. 이 경우 시스템 환경에 맞춰 `int64` 또는 `int32`로 변경하여 사용하시기 바랍니다.
+* **PyTorch**: `torch.long` 또는 `torch.int64`
+* **NumPy/TF**: `np.int64`
+
+
+
+---
+
+## ✨ 추가 과제 (Next Steps)
+
+* **성능 향상**: 다양한 하이퍼파라미터 튜닝 및 Feature Engineering을 시도해 보세요!
+* **UI 개선**: Streamlit에서 제공하는 다양한 위젯을 활용해 더 멋진 추천 화면을 꾸며보세요.
+
+---
